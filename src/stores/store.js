@@ -52,10 +52,25 @@ const WhoamiStore = Reflux.createStore({
     //   // DataService API: https://github.com/mongodb-js/data-service/blob/master/lib/data-service.js
     // });
     //
-    // appRegistry.on('data-service-connected', (error, dataService) => {
-    //   // dataService is connected or errored.
-    //   // DataService API: https://github.com/mongodb-js/data-service/blob/master/lib/data-service.js
-    // });
+    appRegistry.on('data-service-connected', (error, dataService) => {
+      if (!error) {
+        dataService.command(
+          'admin',
+          {connectionStatus : 1},
+          (err, res) => {
+            if (!err && res.authInfo && res.authInfo.authenticatedUsers) {
+              this.setState({
+                user: res.authInfo.authenticatedUsers[0].user,
+                role: res.authInfo.authenticatedUserRoles[0].role
+              })
+            } else {
+              this.setState({user: '', role: ''});
+            }
+          }
+        );
+      }
+    });
+
     //
     // appRegistry.on('collection-changed', (namespace) => {
     //   // The collection has changed - provides the current namespace.
@@ -95,7 +110,7 @@ const WhoamiStore = Reflux.createStore({
    */
   getInitialState() {
     return {
-      status: 'enabled'
+      user: '', role: ''
     };
   },
 
