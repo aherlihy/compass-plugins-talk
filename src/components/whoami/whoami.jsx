@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ToggleButton from 'components/toggle-button';
+import FontAwesome from 'react-fontawesome';
+
 
 import styles from './whoami.less';
 
