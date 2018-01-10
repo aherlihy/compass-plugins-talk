@@ -12,11 +12,11 @@ class Whoami extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    status: PropTypes.oneOf(['enabled', 'disabled'])
+    user: PropTypes.string.isRequired,
+    role: PropTypes.string.isRequired
   };
-
   static defaultProps = {
-    status: 'enabled'
+    user: '', role: ''
   };
 
   onClick = () => {
@@ -29,12 +29,18 @@ class Whoami extends Component {
    * @returns {React.Component} The rendered component.
    */
   render() {
+    if (!this.props.user) {
+      return (
+        <div>
+          <FontAwesome name="user-times"/>
+          No User
+        </div>
+      );
+    }
     return (
       <div className={classnames(styles.root)}>
-        <h2 className={classnames(styles.title)}>Whoami Plugin</h2>
-        <p>A plugin to indicate the current user.</p>
-        <p>The current status is: <code>{this.props.status}</code></p>
-        <ToggleButton onClick={this.onClick} />
+        <FontAwesome name="user"/>
+        <i> {this.props.user}: {this.props.role}</i>
       </div>
     );
   }
